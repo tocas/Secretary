@@ -62,8 +62,8 @@ app.post('/pt-activity', function(req, res) {
           host: 'smtp.gmail.com', // required
           port: 587, // optional, defaults to 25 or 465
           use_authentication: true, // optional, false by default
-          user: 'tomaslucovic@gmail.com', // used only when use_authentication is true 
-          pass: 'pLH9P274iD'  // used only when use_authentication is true
+          user: 'secretarytimesheet@gmail.com', // used only when use_authentication is true 
+          pass: '7IAgfyDpWq67'  // used only when use_authentication is true
       }
       nodemailer.send_mail(
           // e-mail options
