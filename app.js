@@ -99,5 +99,8 @@ app.get('/log-time/:id/:minutes', function(req, res) {
   res.end();
 });
 
-app.listen(3001);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+var port = process.env.PORT || 3000;
+app.listen(port, function() {
+  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+});
