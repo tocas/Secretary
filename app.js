@@ -89,7 +89,7 @@ app.get('/log-time/:id/:minutes', function(req, res) {
   
   var request = require('request');
   request.post(
-    { url: 'http://localhost:3000/api/create',
+    { url: 'http://localhost:3000/api/create/?user='+email+'',
       body: '{"day":"2012-02-09","description":"'+ escape(database[email].description) +'","project_id":' + database[email].project_id["#"] +',"story_id":'+database[email].stories.story.id["#"] +',"time":'+req.params.minutes+'}' }, 
     function (error, response, body) {
     if (!error && response.statusCode == 200) {
