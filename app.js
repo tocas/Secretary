@@ -75,7 +75,7 @@ app.post('/pt-activity', function(req, res) {
           // e-mail options
           {
               sender: 'secretery@blueberryapps.com',
-              to:'tlucovic@blueberryapps.com',
+              to: email,
               subject:'Time!',
               html: '<p>Jak dlouho jste pracoval na úkolu?' + data.description + '</p><br /><p>'+ data.project_id["#"] +'</p><br /><p>'+ data.stories.story.id["#"] +'</p><br /><a href="http://time-sheet-secretary.herokuapp.com/log-time/'+ secret + '/60">1 hodina</a>'
           },
