@@ -81,7 +81,7 @@ app.post('/pt-activity', function(req, res) {
           },
           // callback function
           function(error, success){
-              console.log('Message ' + success ? 'sent' : 'failed');
+              console.log('Message ' + success ? 'sent' + email: 'failed');
           }
       );
     });
