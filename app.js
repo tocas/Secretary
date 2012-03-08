@@ -46,6 +46,12 @@ var database = {
 };
 
 
+app.get('/', function(request, response) {
+  response.send('Hello, what can I help you with?');
+});
+
+
+
 app.post('/pt-activity', function(req, res) {
   req.on('data', function(chunk) {
     data = chunk.toString();
@@ -71,7 +77,7 @@ app.post('/pt-activity', function(req, res) {
               sender: 'secretery@blueberryapps.com',
               to:'tlucovic@blueberryapps.com',
               subject:'Time!',
-              html: '<p>Jak dlouho jste pracoval na úkolu?' + data.description + '</p><br /><p>'+ data.project_id["#"] +'</p><br /><p>'+ data.stories.story.id["#"] +'</p><br /><a href="http://localhost:3001/log-time/'+ secret + '/60">1 hodina</a>'
+              html: '<p>Jak dlouho jste pracoval na úkolu?' + data.description + '</p><br /><p>'+ data.project_id["#"] +'</p><br /><p>'+ data.stories.story.id["#"] +'</p><br /><a href="http://time-sheet-secretary.herokuapp.com/log-time/'+ secret + '/60">1 hodina</a>'
           },
           // callback function
           function(error, success){
@@ -89,7 +95,7 @@ app.get('/log-time/:id/:minutes', function(req, res) {
   
   var request = require('request');
   request.post(
-    { url: 'http://localhost:3000/api/create/?user='+email+'',
+    { url: 'http://time-sheet.heroku.com/api/create/?user='+email+'',
       body: '{"day":"2012-02-09","description":"'+ escape(database[email].description) +'","project_id":' + database[email].project_id["#"] +',"story_id":'+database[email].stories.story.id["#"] +',"time":'+req.params.minutes+'}' }, 
     function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -98,6 +104,8 @@ app.get('/log-time/:id/:minutes', function(req, res) {
   })
   res.end();
 });
+
+
 
 
 var port = process.env.PORT || 3000;
