@@ -25,10 +25,17 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  time_sheet_base_url = 'http://localhost:3000/'
+  secretary_base_url = 'http://localhost:3001/'
+  sender_email = 'development@secretary.cz'
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler());
+  time_sheet_base_url = 'http://time-sheet.heroku.com/'
+  secretary_base_url = 'http://time-sheet-secretary.herokuapp.com/'
+  sender_email = 'production@secretary.cz'
+  
 });
 
 // Routes
@@ -77,7 +84,7 @@ app.post('/pt-activity', function(req, res) {
               sender: 'secretery@blueberryapps.com',
               to: email,
               subject:'Time!',
-              html: '<p>Jak dlouho jste pracoval na úkolu?' + data.description + '</p><br /><p>'+ data.project_id["#"] +'</p><br /><p>'+ data.stories.story.id["#"] +'</p><br /><a href="http://time-sheet-secretary.herokuapp.com/log-time/'+ secret + '/60">1 hodina</a>'
+              html: '<p>Jak dlouho jste pracoval na úkolu?' + data.description + '</p><br /><p>'+ data.project_id["#"] +'</p><br /><p>'+ data.stories.story.id["#"] +'</p><br /><a href="'+secretary_base_url+'log-time/'+ secret + '/60">1 hodina</a>'
           },
           // callback function
           function(error, success){
@@ -95,7 +102,7 @@ app.get('/log-time/:id/:minutes', function(req, res) {
   
   var request = require('request');
   request.post(
-    { url: 'http://time-sheet.heroku.com/api/create/?user='+email+'',
+    { url: time_sheet_base_url + 'api/create/?user=' + email + '',
       body: '{"day":"2012-02-09","description":"'+ escape(database[email].description) +'","project_id":' + database[email].project_id["#"] +',"story_id":'+database[email].stories.story.id["#"] +',"time":'+req.params.minutes+'}' }, 
     function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -108,7 +115,7 @@ app.get('/log-time/:id/:minutes', function(req, res) {
 
 
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 app.listen(port, function() {
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
