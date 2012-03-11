@@ -65,6 +65,8 @@ app.post('/pt-activity', function(req, res) {
     xmlParser.parseString(data, function(err, data) {
       console.log(data.project_id["#"]);
       console.log(data.stories.story.id["#"]);
+      console.log(data.occurred_at["#"].split(" ")[0].replace("/","-").replace("/","-"));
+      date = data.occurred_at["#"].split(" ")[0].replace("/","-").replace("/","-");
       var email = userMap[data.author];
       var secret = Math.round(Math.random()*1000000000);
       console.log(email, ' má tajemství ', secret);
@@ -88,7 +90,7 @@ app.post('/pt-activity', function(req, res) {
           },
           // callback function
           function(error, success){
-              console.log('Message ' + success ? 'sent' + email: 'failed');
+              console.log('Message ' + success ? 'sent ' + email: 'failed');
           }
       );
     });
@@ -99,11 +101,12 @@ app.post('/pt-activity', function(req, res) {
 app.get('/log-time/:id/:minutes', function(req, res) {
   console.log(tasks[req.params.id], req.params.minutes);
   var email = tasks[req.params.id];
+  var date = database[email].occurred_at["#"].split(" ")[0].replace("/","-").replace("/","-");
   
   var request = require('request');
   request.post(
     { url: time_sheet_base_url + 'api/create/?user=' + email + '',
-      body: '{"day":"2012-02-09","description":"'+ escape(database[email].description) +'","project_id":' + database[email].project_id["#"] +',"story_id":'+database[email].stories.story.id["#"] +',"time":'+req.params.minutes+'}' }, 
+      body: '{"day":"'+date+'","description":"'+ escape(database[email].description) +'","project_id":' + database[email].project_id["#"] +',"story_id":'+database[email].stories.story.id["#"] +',"time":'+req.params.minutes+'}' }, 
     function (error, response, body) {
     if (!error && response.statusCode == 200) {
       console.log(body) 
